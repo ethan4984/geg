@@ -30,6 +30,12 @@ always @(operation or operand0 or operand1 or dest) begin
 		`ALU_OPERATION_AND: begin
 			dest = operand0 & operand1;
 		end
+		`ALU_OPERATION_LEFT_SHIFT: begin
+			dest = operand0 << operand1;
+		end
+		`ALU_OPERATION_RIGHT_SHIFT: begin
+			dest = operand0 >> operand1;
+		end
 	endcase
 end
 
