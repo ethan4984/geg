@@ -2,139 +2,164 @@
 `include "execute.svh"
 
 module decode(clk, instruction);
-	input logic clk;
-	input instruction_t instruction;
 
-	operation_t operation;
-	execute execute(clk, operation);
+input logic clk;
+input instruction_t instruction;
 
-	task rtype_instruction(input instr_t instr);
-		begin
-			$display("type r");
-			case(instr.func3)
-				3'b000: begin
-					case(instr.func7)
-						7'b000000: begin // add
-							operation.operation_type <= `OPERATION_ALU;
-							operation.operation_function <= `ALU_OPERATION_ADD;
-							operation.rs1 = instr.rs1;
-							operation.rs2 = instr.rs2;
-							operation.dest = instr.rd;
-						end
-						7'b010000: begin // sub
-							operation.operation_type <= `OPERATION_ALU;
-							operation.operation_function <= `ALU_OPERATION_SUB;
-							operation.rs1 = instr.rs1;
-							operation.rs2 = instr.rs2;
-							operation.dest = instr.rd;
-						end
-						default begin
-							$display("unkwon function");
-						end
-					endcase
-				end
-				3'b001: begin
-					case(instr.func7)
-						7'b0000000: begin // sll
-						end
-						default: begin
-							$display("unknown function");
-						end
-					endcase
-				end
-				3'b010: begin
-					case(instr.func7)
-						7'b0000000: begin // slt
-						end
-						default: begin
-							$display("unknown function");
-						end
-					endcase
-				end
-				3'b011: begin
-					case(instr.func7)
-						7'b0000000: begin // sltu
-						end
-						default: begin
-							$display("unknown function");
-						end
-					endcase
-				end
-				3'b100: begin
-					case(instr.func7)
-						7'b0000000: begin // xor
-						end
-						default: begin
-							$display("unknown function");
-						end
-					endcase
-				end
-				3'b101: begin
-					case(instr.func7)
-						7'b0000000: begin // srl
-						end
-						default: begin
-							$display("unknown function");
-						end
-					endcase
-				end
-				3'b101: begin
-					case(instr.func7)
-						7'b0000000: begin // sra
-						end
-						default: begin
-							$display("unknown function");
-						end
-					endcase
-				end
-				3'b110: begin
-					case(instr.func7)
-						7'b0000000: begin // or
-						end
-						default: begin
-							$display("unknown function");
-						end
-					endcase
-				end
-				3'b111: begin
-					case(instr.func7)
-						7'b0000000: begin // and
-						end
-						default: begin
-							$display("unknown function");
-						end
-					endcase
-				end
-			endcase
-		end
-	endtask
+operation_t operation;
+execute execute(clk, operation);
 
-	task itype_instruction(input insti_t insti);
-		begin
-			$display("type i");						
-		end
-	endtask
-
-	task btype_instruction(input instb_t instr);
-		begin
-			$display("type b");
-		end
-	endtask
-
-	task stype_instruction(input insts_t insts);
-		begin
-			$display("type s");
-		end
-	endtask
-
-	always @(posedge clk) begin
-		case(instruction.instr.opcode)
-			`OPCODE_R_TYPE: rtype_instruction(instruction.instr);
-			`OPCODE_MI_TYPE: itype_instruction(instruction.insti);
-			`OPCODE_I_TYPE: itype_instruction(instruction.insti);
-			`OPCODE_B_TYPE: btype_instruction(instruction.instu);
-			`OPCODE_S_TYPE: stype_instruction(instruction.insts);
-			default: $display("unkown opcode");
+task rtype_function0(input instr_t instr);
+	begin
+		case(instr.func7)
+			7'b0000000: begin // add
+				operation.operation_type <= `OPERATION_ALU;
+				operation.operation_function <= `ALU_OPERATION_ADD;
+				operation.rs1 = instr.rs1;
+				operation.rs2 = instr.rs2;
+				operation.dest = instr.rd;
+			end
+			7'b0100000: begin // sub
+				operation.operation_type <= `OPERATION_ALU;
+				operation.operation_function <= `ALU_OPERATION_SUB;
+				operation.rs1 = instr.rs1;
+				operation.rs2 = instr.rs2;
+				operation.dest = instr.rd;
+			end
+			default: $display("unknown func7");
 		endcase
 	end
+endtask
+
+task rtype_function1(input instr_t instr);
+	begin
+		case(instr.func7)
+			7'b0000000: begin // sll
+			end
+			default: $display("unknown func7");
+		endcase
+	end
+endtask
+
+task rtype_function2(input instr_t instr);
+	begin
+		case(instr.func7)
+			7'b0000000: begin // slt
+			end
+			default: $display("unknown func7");
+		endcase
+	end
+endtask
+
+task rtype_function3(input instr_t instr);
+	begin
+		case(instr.func7)
+			7'b0000000: begin // sltu
+			end
+			default: $display("unknown func7");
+		endcase
+	end
+endtask
+
+task rtype_function4(input instr_t instr);
+	begin
+		case(instr.func7)
+			7'b0000000: begin // xor
+				operation.operation_type <= `OPERATION_ALU;
+				operation.operation_function <= `ALU_OPERATION_XOR;
+				operation.rs1 = instr.rs1;
+				operation.rs2 = instr.rs2;
+				operation.dest = instr.rd;
+			end
+			default: $display("unknown func7");
+		endcase
+	end
+endtask
+
+task rtype_function5(input instr_t instr);
+	begin
+		case(instr.func7)
+			7'b0000000: begin // srl
+			end
+			7'b0100000: begin //  sra
+			end
+			default: $display("unknown func7");
+		endcase
+	end
+endtask
+
+task rtype_function6(input instr_t instr);
+	begin
+		case(instr.func7)
+			7'b0000000: begin // or
+				operation.operation_type <= `OPERATION_ALU;
+				operation.operation_function <= `ALU_OPERATION_OR;
+				operation.rs1 = instr.rs1;
+				operation.rs2 = instr.rs2;
+				operation.dest = instr.rd;
+			end
+			default: $display("unknown func7");
+		endcase
+	end
+endtask
+
+task rtype_function7(input instr_t instr);
+	begin
+		case(instr.func7) 
+			7'b0000000: begin // and
+				operation.operation_type <= `OPERATION_ALU;
+				operation.operation_function <= `ALU_OPERATION_AND;
+				operation.rs1 = instr.rs1;
+				operation.rs2 = instr.rs2;
+				operation.dest = instr.rd;
+			end
+			default: $display("unknown func7");
+		endcase
+	end
+endtask
+
+task rtype_instruction(input instr_t instr);
+	begin
+		case(instr.func3)
+			3'b000: rtype_function0(instr);
+			3'b001: rtype_function1(instr); 
+			3'b010: rtype_function2(instr);
+			3'b011: rtype_function3(instr);
+			3'b100: rtype_function4(instr);
+			3'b101: rtype_function5(instr);
+			3'b110: rtype_function6(instr);
+			3'b111: rtype_function7(instr);
+		endcase
+	end
+endtask
+
+task itype_instruction(input insti_t insti);
+	begin
+		$display("type i");
+	end
+endtask
+
+task btype_instruction(input instb_t instr);
+	begin
+		$display("type b");
+	end
+endtask
+
+task stype_instruction(input insts_t insts);
+	begin
+		$display("type s");
+	end
+endtask
+
+always @(posedge clk) begin
+	case(instruction.instr.opcode)
+		`OPCODE_R_TYPE: rtype_instruction(instruction.instr);
+		`OPCODE_MI_TYPE: itype_instruction(instruction.insti);
+		`OPCODE_I_TYPE: itype_instruction(instruction.insti);
+		`OPCODE_B_TYPE: btype_instruction(instruction.instu);
+		`OPCODE_S_TYPE: stype_instruction(instruction.insts);
+		default: $display("unkown opcode");
+	endcase
+end
+
 endmodule
