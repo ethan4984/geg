@@ -15,16 +15,16 @@ task rtype_function0(input instr_t instr);
 			7'b0000000: begin // add
 				operation.operation_type <= `OPERATION_ALU;
 				operation.operation_function <= `ALU_OPERATION_ADD;
-				operation.rs1 = instr.rs1;
-				operation.rs2 = instr.rs2;
-				operation.dest = instr.rd;
+				operation.rs1 <= instr.rs1;
+				operation.rs2 <= instr.rs2;
+				operation.dest <= instr.rd;
 			end
 			7'b0100000: begin // sub
 				operation.operation_type <= `OPERATION_ALU;
 				operation.operation_function <= `ALU_OPERATION_SUB;
-				operation.rs1 = instr.rs1;
-				operation.rs2 = instr.rs2;
-				operation.dest = instr.rd;
+				operation.rs1 <= instr.rs1;
+				operation.rs2 <= instr.rs2;
+				operation.dest <= instr.rd;
 			end
 			default: $display("unknown func7");
 		endcase
@@ -67,9 +67,9 @@ task rtype_function4(input instr_t instr);
 			7'b0000000: begin // xor
 				operation.operation_type <= `OPERATION_ALU;
 				operation.operation_function <= `ALU_OPERATION_XOR;
-				operation.rs1 = instr.rs1;
-				operation.rs2 = instr.rs2;
-				operation.dest = instr.rd;
+				operation.rs1 <= instr.rs1;
+				operation.rs2 <= instr.rs2;
+				operation.dest <= instr.rd;
 			end
 			default: $display("unknown func7");
 		endcase
@@ -94,9 +94,9 @@ task rtype_function6(input instr_t instr);
 			7'b0000000: begin // or
 				operation.operation_type <= `OPERATION_ALU;
 				operation.operation_function <= `ALU_OPERATION_OR;
-				operation.rs1 = instr.rs1;
-				operation.rs2 = instr.rs2;
-				operation.dest = instr.rd;
+				operation.rs1 <= instr.rs1;
+				operation.rs2 <= instr.rs2;
+				operation.dest <= instr.rd;
 			end
 			default: $display("unknown func7");
 		endcase
@@ -109,9 +109,9 @@ task rtype_function7(input instr_t instr);
 			7'b0000000: begin // and
 				operation.operation_type <= `OPERATION_ALU;
 				operation.operation_function <= `ALU_OPERATION_AND;
-				operation.rs1 = instr.rs1;
-				operation.rs2 = instr.rs2;
-				operation.dest = instr.rd;
+				operation.rs1 <= instr.rs1;
+				operation.rs2 <= instr.rs2;
+				operation.dest <= instr.rd;
 			end
 			default: $display("unknown func7");
 		endcase
