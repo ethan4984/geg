@@ -35,6 +35,11 @@ task rtype_function1(input instr_t instr);
 	begin
 		case(instr.func7)
 			7'b0000000: begin // sll
+				operation.operation_type <= `OPERATION_ALU;
+				operation.operation_function <= `ALU_OPERATION_LEFT_SHIFT;
+				operation.rs1 <= instr.rs1;
+				operation.rs2 <= instr.rs2;
+				operation.dest <= instr.rd;
 			end
 			default: $display("unknown func7");
 		endcase
@@ -80,6 +85,11 @@ task rtype_function5(input instr_t instr);
 	begin
 		case(instr.func7)
 			7'b0000000: begin // srl
+				operation.operation_type <= `OPERATION_ALU;
+				operation.operation_function <= `ALU_OPERATION_RIGHT_SHIFT;
+				operation.rs1 <= instr.rs1;
+				operation.rs2 <= instr.rs2;
+				operation.dest <= instr.rd;
 			end
 			7'b0100000: begin //  sra
 			end
