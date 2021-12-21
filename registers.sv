@@ -24,8 +24,10 @@ always @(posedge clk) begin
 	end else if(enabled) begin
 		case(wb.operation)
 			`REGISTER_OPERATION_GPR: begin
-				$display("writing %d to register %d", wb.data, wb.rs);
-				registers.gprs[wb.rs] = wb.data;
+				if(wb.rs != 0) begin
+					$display("writing %d to register %d", wb.data, wb.rs);
+					registers.gprs[wb.rs] = wb.data;
+				end
 			end
 			`REGISTER_OPERATION_FLAGS: begin
 				registers.flags = wb.data;
