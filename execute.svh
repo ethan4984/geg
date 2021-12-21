@@ -1,5 +1,5 @@
-`ifndef EXECUTE_H_
-`define EXECUTE_H_
+`ifndef EXECUTE_SVH_
+`define EXECUTE_SVH_
 
 `define OPERATION_ALU 0
 `define OPERATION_MEM 1

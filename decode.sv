@@ -1,15 +1,20 @@
 `include "decode.svh"
 `include "execute.svh"
 
-module decode(clk, instruction);
+module decode (
+	input logic clk, 
+	input logic reset,
+	input logic enabled, 
+	output logic stalled, 
+	output logic valid, 
+	input logic next_enabled, 
+	input logic next_stalled, 
+	input logic prev_valid, 
+	input instruction_t instruction, 
+	output operation_t operation
+);
 
-input logic clk;
-input instruction_t instruction;
-
-operation_t operation;
-execute execute(clk, operation);
-
-task rtype_function0(input instr_t instr);
+task automatic rtype_function0(input instr_t instr);
 	begin
 		case(instr.func7)
 			7'b0000000: begin // add
@@ -35,7 +40,7 @@ task rtype_function0(input instr_t instr);
 	end
 endtask
 
-task rtype_function1(input instr_t instr);
+task automatic rtype_function1(input instr_t instr);
 	begin
 		case(instr.func7)
 			7'b0000000: begin // sll
@@ -52,7 +57,7 @@ task rtype_function1(input instr_t instr);
 	end
 endtask
 
-task rtype_function2(input instr_t instr);
+task automatic rtype_function2(input instr_t instr);
 	begin
 		case(instr.func7)
 			7'b0000000: begin // slt
@@ -62,7 +67,7 @@ task rtype_function2(input instr_t instr);
 	end
 endtask
 
-task rtype_function3(input instr_t instr);
+task automatic rtype_function3(input instr_t instr);
 	begin
 		case(instr.func7)
 			7'b0000000: begin // sltu
@@ -72,7 +77,7 @@ task rtype_function3(input instr_t instr);
 	end
 endtask
 
-task rtype_function4(input instr_t instr);
+task automatic rtype_function4(input instr_t instr);
 	begin
 		case(instr.func7)
 			7'b0000000: begin // xor
@@ -89,7 +94,7 @@ task rtype_function4(input instr_t instr);
 	end
 endtask
 
-task rtype_function5(input instr_t instr);
+task automatic rtype_function5(input instr_t instr);
 	begin
 		case(instr.func7)
 			7'b0000000: begin // srl
@@ -115,7 +120,7 @@ task rtype_function5(input instr_t instr);
 	end
 endtask
 
-task rtype_function6(input instr_t instr);
+task automatic rtype_function6(input instr_t instr);
 	begin
 		case(instr.func7)
 			7'b0000000: begin // or
@@ -130,9 +135,9 @@ task rtype_function6(input instr_t instr);
 			default: $display("unknown func7");
 		endcase
 	end
-endtask
+endtask 
 
-task rtype_function7(input instr_t instr);
+task automatic rtype_function7(input instr_t instr);
 	begin
 		case(instr.func7) 
 			7'b0000000: begin // and
@@ -149,7 +154,7 @@ task rtype_function7(input instr_t instr);
 	end
 endtask
 
-task rtype_instruction(input instr_t instr);
+task automatic rtype_instruction(input instr_t instr);
 	begin
 		case(instr.func3)
 			3'b000: rtype_function0(instr);
@@ -164,33 +169,49 @@ task rtype_instruction(input instr_t instr);
 	end
 endtask
 
-task itype_instruction(input insti_t insti);
+task automatic itype_instruction(input insti_t insti);
 	begin
 		$display("type i");
 	end
 endtask
 
-task btype_instruction(input instb_t instr);
+task automatic btype_instruction(input instb_t instr);
 	begin
 		$display("type b");
 	end
 endtask
 
-task stype_instruction(input insts_t insts);
+task automatic stype_instruction(input insts_t insts);
 	begin
 		$display("type s");
 	end
 endtask
 
+always_comb begin
+	stalled = (valid && !next_stalled);
+end
+
 always @(posedge clk) begin
-	case(instruction.instr.opcode)
-		`OPCODE_R_TYPE: rtype_instruction(instruction.instr);
-		`OPCODE_MI_TYPE: itype_instruction(instruction.insti);
-		`OPCODE_I_TYPE: itype_instruction(instruction.insti);
-		`OPCODE_B_TYPE: btype_instruction(instruction.instu);
-		`OPCODE_S_TYPE: stype_instruction(instruction.insts);
-		default: $display("unkown opcode");
-	endcase
+	if(reset) begin
+		valid <= 0;
+	end else begin
+		if(enabled) begin
+			valid <= prev_valid;
+			case(instruction.instr.opcode)
+				`OPCODE_R_TYPE: rtype_instruction(instruction.instr);
+				`OPCODE_MI_TYPE: itype_instruction(instruction.insti);
+				`OPCODE_I_TYPE: itype_instruction(instruction.insti);
+				`OPCODE_B_TYPE: btype_instruction(instruction.instu);
+				`OPCODE_S_TYPE: stype_instruction(instruction.insts);
+				default: begin
+					$display("unkown opcode");
+					valid <= 0;
+				end
+			endcase
+		end else if(next_enabled) begin
+			valid <= 0;
+		end
+	end
 end
 
 endmodule

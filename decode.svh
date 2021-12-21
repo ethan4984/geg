@@ -8,12 +8,12 @@
 `define OPCODE_B_TYPE 7'b1100011
 
 typedef struct packed {
-	logic [6:0] opcode;
-	logic [4:0] rd;
-	logic [2:0] func3;
-	logic [4:0] rs1;
-	logic [4:0] rs2;
 	logic [6:0] func7;
+	logic [4:0] rs2;
+	logic [4:0] rs1;
+	logic [2:0] func3;
+	logic [4:0] rd;
+	logic [6:0] opcode;
 } instr_t;
 
 typedef union packed {
@@ -77,6 +77,7 @@ typedef union packed {
 	insts_t insts;
 	instb_t instb;
 	instj_t instj;
+	logic [31:0] raw;
 } instruction_t;
 
 `endif

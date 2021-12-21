@@ -1,5 +1,5 @@
-`ifndef ALU_H_
-`define ALU_H_
+`ifndef ALU_SVH_
+`define ALU_SVH_
 
 `define ALU_OPERATION_ADD 0
 `define ALU_OPERATION_SUB 1
