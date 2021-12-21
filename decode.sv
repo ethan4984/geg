@@ -187,12 +187,41 @@ task automatic stype_instruction(input insts_t insts);
 	end
 endtask
 
+operation_t operation_list[4];
+logic [1:0] operation_cnt;
+
+task automatic hazard_detection(input operation_t operation);
+	operation_t tmp_operation;
+
+	begin
+		foreach(operation_list[i]) begin
+			tmp_operation = operation_list[i];
+			if(	tmp_operation.dest == operation.dest ||
+				tmp_operation.dest == operation.rs1 ||
+				tmp_operation.dest == operation.rs2) begin
+				pipeline.fetch_hazard <= 1;
+				pipeline.decode_hazard <= 1;
+				pipeline.execute_hazard <= 1;
+				pipeline.wb_hazard <= 1;
+			end
+		end
+		
+		operation_list[operation_cnt++] = operation;
+	end
+endtask
+
 always_comb begin
 	stalled = (valid && !next_stalled);
 end
 
 always @(posedge clk) begin
 	if(reset) begin
+		operation_cnt <= 0;
+
+		foreach(operation_list[i]) begin
+			operation_list[i] <= 0;
+		end
+
 		valid <= 0;
 	end else begin
 		if(enabled) begin
@@ -208,6 +237,7 @@ always @(posedge clk) begin
 					valid <= 0;
 				end
 			endcase
+			hazard_detection(operation);
 		end else if(next_enabled) begin
 			valid <= 0;
 		end

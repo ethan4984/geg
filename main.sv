@@ -1,15 +1,15 @@
 `include "decode.svh"
 `include "alu.svh"
 
-module main;
+module pipeline;
 
 logic clk, reset;
 always #10 clk = ~clk;
 
-logic fetch_enabled, fetch_valid, fetch_stalled;
-logic decode_enabled, decode_valid, decode_stalled;
-logic execute_enabled, execute_valid, execute_stalled;
-logic wb_enabled, wb_valid, wb_stalled;
+logic fetch_enabled, fetch_valid, fetch_stalled, fetch_hazard;
+logic decode_enabled, decode_valid, decode_stalled, decode_hazard;
+logic execute_enabled, execute_valid, execute_stalled, execute_hazard;
+logic wb_enabled, wb_valid, wb_stalled, wb_hazard;
 
 assign fetch_enabled = !fetch_stalled;
 assign decode_enabled = (fetch_valid && !decode_stalled);
@@ -69,6 +69,10 @@ write_back write_back (
 
 initial begin
 	clk <= 1;
+	fetch_hazard <= 0;
+	decode_hazard <= 0;
+	execute_hazard <= 0;
+	wb_hazard <= 0;
 
 	registers.gprs[0] = 0;
 	for(int i = 1; i < 256; i++) begin
