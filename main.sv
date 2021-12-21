@@ -70,7 +70,8 @@ write_back write_back (
 initial begin
 	clk <= 1;
 
-	for(int i = 0; i < 256; i++) begin
+	registers.gprs[0] = 0;
+	for(int i = 1; i < 256; i++) begin
 		registers.gprs[i] = i;
 	end
 
