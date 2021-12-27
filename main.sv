@@ -11,10 +11,15 @@ logic decode_enabled, decode_valid, decode_stalled, decode_hazard;
 logic execute_enabled, execute_valid, execute_stalled, execute_hazard;
 logic wb_enabled, wb_valid, wb_stalled, wb_hazard;
 
-assign fetch_enabled = !fetch_stalled;
-assign decode_enabled = (fetch_valid && !decode_stalled);
-assign execute_enabled = (decode_valid && !execute_stalled);
-assign wb_enabled = (execute_valid);
+assign fetch_enabled = !fetch_stalled && !fetch_hazard;
+assign decode_enabled = (fetch_valid && !decode_stalled && !decode_hazard);
+assign execute_enabled = (decode_valid && !execute_stalled && !execute_hazard);
+assign wb_enabled = (execute_valid && !wb_hazard);
+
+/*if(!this_hazard && next_hazard) begin
+	this_hazard = 1;
+	next_hazard = 0;
+end*/
 
 instruction_t instruction;
 operation_t operation;

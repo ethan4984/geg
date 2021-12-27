@@ -94,6 +94,11 @@ always @(posedge clk) begin
 			valid <= 0;
 		end
 	end
+
+	if(!pipeline.execute_hazard && pipeline.wb_hazard) begin
+		pipeline.execute_hazard <= 1;
+		pipeline.wb_hazard <= 0;
+	end
 end
 
 endmodule

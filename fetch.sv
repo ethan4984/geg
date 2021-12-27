@@ -30,6 +30,11 @@ always @(posedge clk) begin
 			valid <= 0;
 		end
 	end
+
+	if(!pipeline.fetch_hazard && pipeline.decode_hazard) begin
+		pipeline.fetch_hazard <= 1;
+		pipeline.decode_hazard <= 0;
+	end
 end
 
 endmodule

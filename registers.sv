@@ -41,6 +41,13 @@ always @(posedge clk) begin
 		endcase
 		valid <= prev_valid;
 	end
+
+	if(!pipeline.wb_hazard && pipeline.execute_hazard) begin
+		pipeline.fetch_hazard <= 0;
+		pipeline.decode_hazard <= 0;
+		pipeline.execute_hazard <= 0;
+		pipeline.wb_hazard <= 0;
+	end
 end
 
 endmodule

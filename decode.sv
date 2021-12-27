@@ -242,6 +242,11 @@ always @(posedge clk) begin
 			valid <= 0;
 		end
 	end
+
+	if(!pipeline.decode_hazard && pipeline.execute_hazard) begin
+		pipeline.decode_hazard <= 1;
+		pipeline.execute_hazard <= 0;
+	end
 end
 
 endmodule
