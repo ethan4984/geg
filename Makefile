@@ -10,7 +10,7 @@ run: build
 
 wave_run: build
 	./$(CAPUT)
-	/cygdrive/c/Users/ethan.miller/Downloads/gtkwave-3.3.90-bin-win64/gtkwave64/bin/gtkwave.exe $(VCD)
+	/cygdrive/c/Users/ethan.miller/Downloads/gtkwave-3.3.90-bin-win64/gtkwave64/bin/gtkwave.exe waveform.gtkw
 	
 
 clean:

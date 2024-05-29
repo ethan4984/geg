@@ -50,15 +50,26 @@ typedef struct packed {
   logic [6:0] IMM2;
 } instrs_t;
 
+// 0000001100100
+
 typedef struct packed {
-  logic [6:0] OPCODE;
-  logic [0:0] IMM1;
-  logic [3:0] IMM2;
-  logic [2:0] FUNC3;
-  logic [4:0] RS1;
-  logic [4:0] RS2;
-  logic [5:0] IMM3;
+//  logic [6:0] OPCODE;
+//  logic [0:0] IMM1;
+//  logic [3:0] IMM2;
+//  logic [2:0] FUNC3;
+//  logic [4:0] RS1;
+//  logic [4:0] RS2;
+//  logic [5:0] IMM3;
+//  logic [0:0] IMM4;
+//
   logic [0:0] IMM4;
+  logic [5:0] IMM3;
+  logic [4:0] RS2;
+  logic [4:0] RS1;
+  logic [2:0] FUNC3;
+  logic [3:0] IMM2;
+  logic [0:0] IMM1;
+  logic [6:0] OPCODE;
 } instrb_t;
 
 typedef struct packed {
@@ -81,13 +92,14 @@ typedef union packed {
 } instr_t;
 
 `define OP_CLASS_ALU 0
+`define OP_CLASS_BRANCH 1
 
-`define INSTRR_INSTANTIATE_OP(FUNCTION) \
-  OP.CLASS <= `OP_CLASS_ALU; \
-  OP.FUNC <= (FUNCTION); \
-  OP.RS1 <= INSTR.RS1; \
-  OP.RS2 <= INSTR.RS2; \
-  OP.RD <= INSTR.RD;
+`define BRANCH_CONDITION_EQ 0
+`define BRANCH_CONDITION_NE 1
+`define BRANCH_CONDITION_LT 2
+`define BRANCH_CONDITION_GE 3
+`define BRANCH_CONDITION_LTU 4
+`define BRANCH_CONDITION_GEU 5
 
 typedef struct packed {
   logic [2:0] CLASS;
@@ -95,6 +107,7 @@ typedef struct packed {
   logic [4:0] RS1;
   logic [4:0] RS2;
   logic [4:0] RD;
+  logic [19:0] IMM;
 } op_t;
 
 `endif

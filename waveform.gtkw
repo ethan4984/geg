@@ -1,0 +1,32 @@
+[*]
+[*] GTKWave Analyzer v3.3.90 (w)1999-2018 BSI
+[*] Wed May 29 19:31:49 2024
+[*]
+[dumpfile] "C:\Users\ethan.miller\Downloads\cygwin\home\ethan.miller\geg\caput.vcd"
+[dumpfile_mtime] "Wed May 29 11:30:55 2024"
+[dumpfile_size] 4430
+[savefile] "C:\Users\ethan.miller\Downloads\cygwin\home\ethan.miller\geg\waveform.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -3581 177
+*-5.970493 86 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb.
+[sst_width] 197
+[signals_width] 195
+[sst_expanded] 1
+[sst_vpaned_height] 153
+@28
+tb.CLK
+tb.decode.RSTN
+@22
+tb.fetch.INSTR[31:0]
+tb.fetch.PC[31:0]
+@28
+tb.program_counter.BRANCH
+@22
+tb.decode.BRANCH_IMM[11:0]
+tb.decode.OP[41:0]
+@28
+tb.decode.VALID
+[pattern_trace] 1
+[pattern_trace] 0
