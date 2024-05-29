@@ -11,12 +11,13 @@
 module fetch (
   input logic CLK,
   input logic RSTN,
+
   input logic [31:0] PC,
   output logic [31:0] INSTR,
 
+  // pipeline flow 
   output logic VALID,
   output logic STALLED,
-
   input logic NEXT_STALLED
 );
 
