@@ -1,5 +1,22 @@
-`ifndef INSTR_SVH_
-`define INSTR_SVH_
+`ifndef RISCV_SVH_
+`define RISCV_SVH_ 
+
+`define ALU_OP_ADD 0
+`define ALU_OP_SUB 1
+`define ALU_OP_SLL 2
+`define ALU_OP_SLT 3
+`define ALU_OP_SLTU 4
+`define ALU_OP_XOR 5
+`define ALU_OP_SRL 6
+`define ALU_OP_SRA 7
+`define ALU_OP_OR 8
+`define ALU_OP_AND 9
+`define ALU_OP_EQ 10
+`define ALU_OP_BNE 11
+`define ALU_OP_BLT 12
+`define ALU_OP_BGE 13
+`define ALU_OP_BLTU 14
+`define ALU_OP_BEGU 15
 
 `define RV32I_OPCODE_R 7'b0110011
 `define RV32I_OPCODE_I 7'b0010011
@@ -18,50 +35,39 @@ typedef struct packed {
 
 typedef union packed {
   struct packed {
-    logic [6:0] OPCODE;
-    logic [4:0] RD;
-    logic [2:0] FUNC3;
-    logic [4:0] RS1;
     logic [11:0] IMM;
+    logic [4:0] RS1;
+    logic [2:0] FUNC3;
+    logic [4:0] RD;
+    logic [6:0] OPCODE;
   } IMM;
 
   struct packed {
-    logic [6:0] OPCODE;
-    logic [4:0] RD1;
-    logic [2:0] FUNC3;
-    logic [4:0] RS2;
-    logic [4:0] SHAMT;
     logic [6:0] IMM;
+    logic [4:0] SHAMT;
+    logic [4:0] RS2;
+    logic [2:0] FUNC3;
+    logic [4:0] RD1;
+    logic [6:0] OPCODE;
   } SHIFT;
 } instri_t;
 
 typedef struct packed {
-  logic [6:0] OPCODE;
-  logic [4:0] RD;
   logic [19:0] IMM;
+  logic [4:0] RD;
+  logic [6:0] OPCODE;
 } instru_t;
 
 typedef struct packed {
-  logic [6:0] OPCODE;
-  logic [4:0] IMM1;
-  logic [2:0] FUNC3;
-  logic [4:0] RS1;
-  logic [4:0] RS2;
   logic [6:0] IMM2;
+  logic [4:0] RS2;
+  logic [4:0] RS1;
+  logic [2:0] FUNC3;
+  logic [4:0] IMM1;
+  logic [6:0] OPCODE;
 } instrs_t;
 
-// 0000001100100
-
 typedef struct packed {
-//  logic [6:0] OPCODE;
-//  logic [0:0] IMM1;
-//  logic [3:0] IMM2;
-//  logic [2:0] FUNC3;
-//  logic [4:0] RS1;
-//  logic [4:0] RS2;
-//  logic [5:0] IMM3;
-//  logic [0:0] IMM4;
-//
   logic [0:0] IMM4;
   logic [5:0] IMM3;
   logic [4:0] RS2;
@@ -90,24 +96,5 @@ typedef union packed {
   instrj_t INSTRJ;
   logic [31:0] RAW;
 } instr_t;
-
-`define OP_CLASS_ALU 0
-`define OP_CLASS_BRANCH 1
-
-`define BRANCH_CONDITION_EQ 0
-`define BRANCH_CONDITION_NE 1
-`define BRANCH_CONDITION_LT 2
-`define BRANCH_CONDITION_GE 3
-`define BRANCH_CONDITION_LTU 4
-`define BRANCH_CONDITION_GEU 5
-
-typedef struct packed {
-  logic [2:0] CLASS;
-  logic [3:0] FUNC;
-  logic [4:0] RS1;
-  logic [4:0] RS2;
-  logic [4:0] RD;
-  logic [19:0] IMM;
-} op_t;
 
 `endif

@@ -1,32 +1,33 @@
 [*]
 [*] GTKWave Analyzer v3.3.90 (w)1999-2018 BSI
-[*] Wed May 29 19:31:49 2024
+[*] Fri May 31 20:29:39 2024
 [*]
-[dumpfile] "C:\Users\ethan.miller\Downloads\cygwin\home\ethan.miller\geg\caput.vcd"
-[dumpfile_mtime] "Wed May 29 11:30:55 2024"
-[dumpfile_size] 4430
-[savefile] "C:\Users\ethan.miller\Downloads\cygwin\home\ethan.miller\geg\waveform.gtkw"
-[timestart] 0
-[size] 1000 600
-[pos] -3581 177
-*-5.970493 86 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[dumpfile] "C:\Users\ethan.miller\Downloads\cygwin\home\ethan.miller\Code\ariosto\ariosto.vcd"
+[dumpfile_mtime] "Fri May 31 12:28:59 2024"
+[dumpfile_size] 1825
+[savefile] "C:\Users\ethan.miller\Downloads\cygwin\home\ethan.miller\Code\ariosto\waveform.gtkw"
+[timestart] 15
+[size] 1076 663
+[pos] -2126 -9
+*-5.168257 106 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tb.
 [sst_width] 197
-[signals_width] 195
+[signals_width] 331
 [sst_expanded] 1
-[sst_vpaned_height] 153
+[sst_vpaned_height] 176
 @28
 tb.CLK
-tb.decode.RSTN
+tb.RSTN
 @22
-tb.fetch.INSTR[31:0]
-tb.fetch.PC[31:0]
+tb.RCH1_ADDR[31:0]
+tb.RCH1_DATA[31:0]
+tb.riscv_core.ALU_OP[3:0]
+tb.riscv_core.ALU_RESULT[31:0]
+@29
+tb.riscv_core.FETCH_STALL
 @28
-tb.program_counter.BRANCH
-@22
-tb.decode.BRANCH_IMM[11:0]
-tb.decode.OP[41:0]
-@28
-tb.decode.VALID
+tb.riscv_core.DECODE_STALL
+tb.riscv_core.EXECUTE_STALL
+tb.riscv_core.WB_STALL
 [pattern_trace] 1
 [pattern_trace] 0
