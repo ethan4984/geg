@@ -1,33 +1,31 @@
 [*]
 [*] GTKWave Analyzer v3.3.90 (w)1999-2018 BSI
-[*] Fri May 31 20:29:39 2024
+[*] Sat Jun 01 18:28:18 2024
 [*]
 [dumpfile] "C:\Users\ethan.miller\Downloads\cygwin\home\ethan.miller\Code\ariosto\ariosto.vcd"
-[dumpfile_mtime] "Fri May 31 12:28:59 2024"
-[dumpfile_size] 1825
+[dumpfile_mtime] "Sat Jun 01 10:27:35 2024"
+[dumpfile_size] 4477
 [savefile] "C:\Users\ethan.miller\Downloads\cygwin\home\ethan.miller\Code\ariosto\waveform.gtkw"
-[timestart] 15
-[size] 1076 663
-[pos] -2126 -9
-*-5.168257 106 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[timestart] 0
+[size] 1920 1017
+[pos] -3875 77
+*-5.168257 101 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tb.
+[treeopen] tb.core.
 [sst_width] 197
 [signals_width] 331
 [sst_expanded] 1
-[sst_vpaned_height] 176
+[sst_vpaned_height] 301
 @28
 tb.CLK
 tb.RSTN
 @22
 tb.RCH1_ADDR[31:0]
 tb.RCH1_DATA[31:0]
-tb.riscv_core.ALU_OP[3:0]
-tb.riscv_core.ALU_RESULT[31:0]
-@29
-tb.riscv_core.FETCH_STALL
 @28
-tb.riscv_core.DECODE_STALL
-tb.riscv_core.EXECUTE_STALL
-tb.riscv_core.WB_STALL
+tb.core.FETCH_ENABLED
+tb.core.DECODE_ENABLED
+tb.core.EXECUTE_ENABLED
+tb.core.WB_ENABLED
 [pattern_trace] 1
 [pattern_trace] 0

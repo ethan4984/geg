@@ -24,6 +24,10 @@
 `define RV32I_OPCODE_S 7'b0100011
 `define RV32I_OPCODE_B 7'b1100011
 
+`define RV32I_OPCODE_JAL 7'b1100111
+`define RV32I_OPCODE_JALR 7'b1101111
+`define RV32I_OPCODE_AUIPC 7'b0010111
+
 typedef struct packed {
   logic [6:0] FUNC7;
   logic [4:0] RS2;

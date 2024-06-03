@@ -15,6 +15,9 @@ module ex # (
   input logic [XLEN-1:0] EX_ALU_OP1,
   input logic [XLEN-1:0] EX_ALU_OP2,
   output logic [XLEN-1:0] EX_ALU_RESULT,
+  input logic [$clog2(XLEN)-1:0] EX_RD_SEL,
+
+  output logic [$clog2(XLEN)-1:0] WB_SEL,
 
   input logic JAL,
   input logic JALR,
@@ -47,6 +50,8 @@ end
 
 always @(posedge CLK) begin
   if(!RSTN && EXECUTE_ENABLED) begin
+    WB_SEL <= EX_RD_SEL;
+
     case(EX_ALU_OP)
       `ALU_OP_ADD: begin
         EX_ALU_RESULT <= EX_ALU_OP1 + EX_ALU_OP2;

@@ -18,8 +18,10 @@ module decode # (
   output logic [XLEN-1:0] EX_ALU_OP1,
   output logic [XLEN-1:0] EX_ALU_OP2,
 
+  output logic [XLEN-1] IMM,
   output logic JAL,
   output logic JALR,
+  output logic AUIPC,
   output logic BRANCH,
 
   output logic [XLEN-1:0] NEXT_PC,
@@ -27,20 +29,21 @@ module decode # (
 
   output logic [$clog2(XCNT)-1:0] READ_SEL1,
   output logic [$clog2(XCNT)-1:0] READ_SEL2,
-  output logic [$clog2(XCNT)-1:0] WB_SEL
+  output logic [$clog2(XCNT)-1:0] EX_RD_SEL
 );
 
 `define INSTRR_INSTANTIATE(OP) \
   EX_ALU_OP <= OP; \
   READ_SEL1 <= INSTRR.RS1; \
   READ_SEL2 <= INSTRR.RS1; \
-  WB_SEL <= INSTRR.RD; \
+  EX_RD_SEL <= INSTRR.RD; \
+  BRANCH <= 0; \
   VALID_INSTRUCTION <= 1;
 
 task instrr (input instrr_t INSTRR);
-  if(INSTRR.RS1 == WB_SEL|| INSTRR.RS2 == WB_SEL) begin
+  if(INSTRR.RS1 == EX_RD_SEL|| INSTRR.RS2 == EX_RD_SEL) begin
     DECODE_HAZARD <= 1;
-    NEXT_PC <= PC;
+    NEXT_PC <= PC + 4;
   end else begin 
     case(INSTRR.FUNC3)
       3'b000: begin
@@ -105,8 +108,37 @@ task instrr (input instrr_t INSTRR);
   end
 endtask
 
+`define INSTRB_INSTANTIATE(OP) \
+  EX_ALU_OP <= OP; \
+  READ_SEL1 <= INSTRB.RS1; \
+  READ_SEL2 <= INSTRB.RS1; \
+  IMM <= { INSTRB.IMM2, INSTRB.IMM3, INSTRB.IMM4, INSTRB.IMM1, 12'b0 }; \
+  BRANCH <= 1; \
+  VALID_INSTRUCTION <= 1;
+
+
 task instrb (input instrb_t INSTRB);
-  VALID_INSTRUCTION <= 0;
+  case(INSTRB.FUNC3)
+    3'b000: begin // BEQ
+      `INSTRB_INSTANTIATE(`ALU_OP_EQ);
+    end
+    3'b001: begin // BNE
+      `INSTRB_INSTANTIATE(`ALU_OP_BNE);
+    end
+    3'b100: begin // BLT
+      `INSTRB_INSTANTIATE(`ALU_OP_BLT);
+    end 
+    3'b101: begin // BGE
+      `INSTRB_INSTANTIATE(`ALU_OP_BGE);
+    end
+    3'b110: begin // BLTU
+      `INSTRB_INSTANTIATE(`ALU_OP_BLTU);
+    end
+    3'b111: begin // BGEU
+      `INSTRB_INSTANTIATE(`ALU_OP_BEGU);
+    end
+    default: VALID_INSTRUCTION <= 0;
+  endcase
 endtask
 
 task instri (input instri_t INSTRB);
@@ -120,6 +152,18 @@ always @(posedge CLK) begin
         `RV32I_OPCODE_R: instrr(INSTR);
         `RV32I_OPCODE_B: instrb(INSTR);
         `RV32I_OPCODE_I: instri(INSTR);
+        `RV32I_OPCODE_JAL: begin
+          JAL <= 1;
+          BRANCH <= 1;
+        end
+        `RV32I_OPCODE_JALR: begin
+          JALR <= 1;
+          BRANCH <= 1;
+        end
+        `RV32I_OPCODE_AUIPC: begin
+          AUIPC <= 1;
+          BRANCH <= 1;
+        end
         default: VALID_INSTRUCTION <= 0;
       endcase
 

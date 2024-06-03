@@ -9,6 +9,8 @@ module wb # (
   output logic WB_HAZARD,
   output logic WB_VALID,
 
+  output logic RELEASE_HAZARD,
+
   input logic [$clog2(XCNT)-1:0] WB_WRITE_SEL,
   input logic [XLEN-1:0] WB_WRITE_DATA,
 
